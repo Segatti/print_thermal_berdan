@@ -1,4 +1,4 @@
-import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:print_thermal_berdan/src/interfaces/text_generator_service.dart';
 import 'package:print_thermal_berdan/src/models/exception_print_thermal.dart';

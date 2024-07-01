@@ -12,8 +12,13 @@ dependencies:
     sdk: flutter
   
   thermal_printer: ^1.0.5
-  esc_pos_utils_plus: ^2.0.3
+  flutter_esc_pos_utils: ^1.0.1
+  flutter_esc_pos_network: ^1.0.3
+  flutter_bluetooth_printer: ^2.16.10
   intl: ^0.19.0
+
+  pdf: ^3.11.0
+  printing: ^5.13.1
 
 dev_dependencies:
   flutter_test:
