@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:elgin/elgin.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -40,6 +41,37 @@ class _MyHomePageState extends State<MyHomePage> {
   List<PrinterDevice> devices = [];
   late StreamSubscription<PrinterDevice> streamDevices;
   PrinterDevice? printerSelected;
+  final ipPrinter = TextEditingController();
+
+  void connectElgin() async {
+    final driver = ElginPrinter(
+      type: ElginPrinterType.TCP,
+      model: ElginPrinterModel.MP4200,
+      connection: ipPrinter.text,
+      parameter: 9100,
+    );
+
+    try {
+      final int? result = await Elgin.printer
+          .connect(driver: driver)
+          .timeout(const Duration(seconds: 5))
+          .catchError((_) {
+        return null;
+      });
+      print("-------------------------------------------------- $result");
+      if (result != null) {
+        if (result == 0) {
+          await Elgin.printer.printString('HELLO PRINTER');
+          await Elgin.printer.feed(2);
+          await Elgin.printer.cut(lines: 2);
+          await Elgin.printer.disconnect();
+        }
+      }
+    } on ElginException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.error.message)));
+    }
+  }
 
   void showMessage(String text) {
     var snack = SnackBar(
@@ -221,6 +253,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
               child: const Text("Tentar como PDF"),
+            ),
+            const SizedBox(height: 32),
+            TextFormField(
+              controller: ipPrinter,
+              decoration: const InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: "Ex: 10.0.0.102",
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                connectElgin();
+              },
+              child: const Text("Tentar com ElginLib"),
             ),
           ],
         ),
