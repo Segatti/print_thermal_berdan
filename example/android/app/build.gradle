@@ -39,7 +39,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
@@ -55,9 +55,4 @@ android {
 
 flutter {
     source = "../.."
-}
-
-dependencies {  
-    implementation "androidx.startup:startup-runtime:1.1.1"
-    implementation fileTree(include: ['*.aar'], dir: 'libs')
 }

@@ -4,21 +4,17 @@ version: 0.0.1
 homepage: https://dart.dev/tools/pub/pubspec
 
 environment:
-  sdk: '>=3.4.1 <4.0.0'
+  sdk: ">=3.4.1 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  
+
   thermal_printer: ^1.0.5
   flutter_esc_pos_utils: ^1.0.1
-  flutter_esc_pos_network: ^1.0.3
-  flutter_bluetooth_printer: ^2.16.10
   intl: ^0.19.0
-
-  pdf: ^3.11.0
-  printing: ^5.13.1
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +29,7 @@ flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
+    # - lib/assets/logo.webp
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see

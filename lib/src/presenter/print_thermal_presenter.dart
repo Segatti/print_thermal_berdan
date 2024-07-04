@@ -20,7 +20,7 @@ class PrintThermalPresenter {
     typeConnection = typeConnection;
     return _printerService.scanPrinters(
       type: typeConnection,
-      isBle: false,
+      isBle: true,
     );
   }
 
