@@ -8,22 +8,34 @@ import 'package:print_thermal_berdan/src/models/order_receipt.dart';
 
 class TextGeneratorService implements ITextGeneratorService {
   Generator? generator;
-  int lineLenght = 48;
 
   @override
   Future<void> init({required PaperSize paperSize}) async {
     final profile = await CapabilityProfile.load();
     generator = Generator(paperSize, profile);
-    if (paperSize == PaperSize.mm72) {
-      lineLenght = 42;
-    }
-    if (paperSize == PaperSize.mm58) {
-      lineLenght = 32;
-    }
   }
 
   String _createLine(String key, String value) {
     return "$key: $value";
+  }
+
+  List<int> createTitle(String title) {
+    var bytes = <int>[];
+    bytes += generator!.text(
+      "+----------------------------------------+",
+      styles: const PosStyles(reverse: true),
+    );
+    bytes += generator!.text(
+      title,
+      styles: const PosStyles(
+        align: PosAlign.center,
+        bold: true,
+      ),
+    );
+    bytes += generator!.text(
+      "+----------------------------------------+",
+    );
+    return bytes;
   }
 
   @override
@@ -33,9 +45,29 @@ class TextGeneratorService implements ITextGeneratorService {
       var dateFormat = DateFormat("dd/MM/yyyy hh:mm");
       bytes += generator!.clearStyle();
 
+      bytes +=
+          generator!.hr(ch: "<>", len: 42); // ------------------------------
+      // Avisos
       bytes += generator!.text(
-        "+-------------| EMPRESA |----------------+",
+        'IMPRESSO EM ${dateFormat.format(DateTime.now())}',
+        styles: const PosStyles(align: PosAlign.center),
       );
+      bytes += generator!.text(
+        'SIMPLES CONFERENCIA DA CONTA',
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.text(
+        'RELATORIO GERENCIAL',
+        styles: const PosStyles(align: PosAlign.center),
+        linesAfter: 1,
+      );
+      bytes += generator!.text(
+        '*** NAO E DOCUMENTO FISCAL ***',
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.hr(len: 42); // -------------------------------------
+
+      bytes += createTitle("EMPRESA");
 
       // Company
       bytes += generator!.text(
@@ -57,38 +89,27 @@ class TextGeneratorService implements ITextGeneratorService {
 
       bytes += generator!.hr(len: 42); // -------------------------------------
 
-      // Avisos
-      bytes += generator!.text(
-        'IMPRESSO EM ${dateFormat.format(DateTime.now())}',
-        styles: const PosStyles(align: PosAlign.center),
-      );
-      bytes += generator!.text(
-        'SIMPLES CONFERENCIA DA CONTA',
-        styles: const PosStyles(align: PosAlign.center),
-      );
-      bytes += generator!.text(
-        'RELATORIO GERENCIAL',
-        styles: const PosStyles(align: PosAlign.center),
-        linesAfter: 1,
-      );
-      bytes += generator!.text(
-        '*** NAO E DOCUMENTO FISCAL ***',
-        styles: const PosStyles(align: PosAlign.center),
-      );
-      bytes += generator!.hr(len: 42); // -------------------------------------
-      bytes += generator!.text(
-        "+-------------| CLIENTE |----------------+",
-      );
+      bytes += createTitle("CLIENTE");
+
       // Customer
-      bytes += generator!.text(_createLine(
-        "NOME",
-        order.customer.name.removeDiacritics(),
-      ));
-      bytes += generator!.text(_createLine("CELULAR", order.customer.phone));
-      bytes += generator!.text(_createLine(
-        "ENDERECO",
-        order.customer.address.removeDiacritics(),
-      ));
+      bytes += generator!.text(
+        _createLine(
+          "NOME",
+          order.customer.name.removeDiacritics(),
+        ),
+        styles: const PosStyles(),
+      );
+      bytes += generator!.text(
+        _createLine("CELULAR", order.customer.phone),
+        styles: const PosStyles(),
+      );
+      bytes += generator!.text(
+        _createLine(
+          "ENDERECO",
+          order.customer.address.removeDiacritics(),
+        ),
+        styles: const PosStyles(),
+      );
       bytes += generator!.hr(len: 42); // -------------------------------------
 
       // Order
@@ -109,19 +130,7 @@ class TextGeneratorService implements ITextGeneratorService {
         'Origem: ${order.order.origin..removeDiacritics()}',
         styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += generator!.text(
-        "+----------------------------------------+",
-      );
-      bytes += generator!.text(
-        "PEDIDO",
-        styles: const PosStyles(
-          align: PosAlign.center,
-          bold: true,
-        ),
-      );
-      bytes += generator!.text(
-        "+----------------------------------------+",
-      );
+      bytes += createTitle("PEDIDO");
 
       bytes += generator!.row([
         PosColumn(
@@ -142,8 +151,8 @@ class TextGeneratorService implements ITextGeneratorService {
       for (var item in order.itemsOrder.cartList) {
         bytes += generator!.row([
           PosColumn(
-            text: "${item.quantity}",
-            width: 2,
+            text: "${item.quantity}x",
+            styles: const PosStyles(align: PosAlign.right),
           ),
           PosColumn(
             text: item.name.removeDiacritics(),
@@ -155,11 +164,39 @@ class TextGeneratorService implements ITextGeneratorService {
             styles: const PosStyles(align: PosAlign.right),
           ),
         ]);
-        if (item.adicionais.isNotEmpty) {
+        if (item.opcionais.isNotEmpty) {
           bytes += generator!.row([
             PosColumn(
+              text: '  Opcionais',
+              width: 12,
+              styles: const PosStyles(bold: true),
+            ),
+          ]);
+          for (var opcional in item.opcionais) {
+            bytes += generator!.row([
+              PosColumn(
+                text: "+",
+                styles: const PosStyles(align: PosAlign.right),
+              ),
+              PosColumn(
+                text: opcional.opcional.removeDiacritics(),
+                width: 7,
+              ),
+              PosColumn(
+                text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
+                width: 3,
+                styles: const PosStyles(align: PosAlign.right),
+              ),
+            ]);
+          }
+        }
+
+        if (item.adicionais.isNotEmpty) {
+          bytes += generator!.row([
+            PosColumn(width: 1),
+            PosColumn(
               text:
-                  '  Adicionaisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
+                  'Adicionaisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
               width: 12,
               styles: const PosStyles(bold: true),
             ),
@@ -167,7 +204,8 @@ class TextGeneratorService implements ITextGeneratorService {
           for (var adicional in item.adicionais) {
             bytes += generator!.row([
               PosColumn(
-                text: "+ ${adicional.quantity}",
+                text: "+ ${adicional.quantity}x",
+                styles: const PosStyles(align: PosAlign.right),
               ),
               PosColumn(
                 text: adicional.adicional.removeDiacritics(),
@@ -182,36 +220,11 @@ class TextGeneratorService implements ITextGeneratorService {
             ]);
           }
         }
-        if (item.opcionais.isNotEmpty) {
-          bytes += generator!.row([
-            PosColumn(
-              text: '  Opcionais',
-              width: 12,
-              styles: const PosStyles(bold: true),
-            ),
-          ]);
-          for (var opcional in item.opcionais) {
-            bytes += generator!.row([
-              PosColumn(
-                text: "+",
-              ),
-              PosColumn(
-                text: opcional.opcional.removeDiacritics(),
-                width: 7,
-              ),
-              PosColumn(
-                text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
-                width: 3,
-                styles: const PosStyles(align: PosAlign.right),
-              ),
-            ]);
-          }
-        }
+
         bytes += generator!.text(
           "+----------------------------------------+",
         );
       }
-      bytes += generator!.hr(ch: "=", len: 42);
 
       // Total
       bytes += generator!.row([
@@ -220,7 +233,7 @@ class TextGeneratorService implements ITextGeneratorService {
           width: 6,
         ),
         PosColumn(
-          text: order.valuesOrder.subtotal.toString(),
+          text: order.valuesOrder.subtotal.toBRL(),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -231,7 +244,7 @@ class TextGeneratorService implements ITextGeneratorService {
           width: 6,
         ),
         PosColumn(
-          text: order.valuesOrder.discount.toString(),
+          text: order.valuesOrder.discount.toBRL(),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -242,7 +255,7 @@ class TextGeneratorService implements ITextGeneratorService {
           width: 6,
         ),
         PosColumn(
-          text: order.valuesOrder.deliveryFee.toString(),
+          text: order.valuesOrder.deliveryFee.toBRL(),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -273,11 +286,13 @@ class TextGeneratorService implements ITextGeneratorService {
           bold: true,
         ),
       );
+      bytes += generator!.emptyLines(1);
       // if (image != null) {
       //   bytes += generator!.emptyLines(2);
       //   bytes += generator!.imageRaster(image!, imageFn: PosImageFn.graphics);
       // }
 
+      generator!.hr(ch: "<>", len: 42); // ------------------------------
       bytes += generator!.cut();
 
       return bytes;
