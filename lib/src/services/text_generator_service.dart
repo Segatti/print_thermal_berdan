@@ -22,6 +22,10 @@ class TextGeneratorService implements ITextGeneratorService {
     }
   }
 
+  String _createLine(String key, String value) {
+    return "$key: $value";
+  }
+
   @override
   List<int> generateOrder({required OrderReceipt order}) {
     if (generator != null) {
@@ -66,42 +70,38 @@ class TextGeneratorService implements ITextGeneratorService {
         '*** NAO E DOCUMENTO FISCAL ***',
         styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += generator!.text(
-        "------------------------------------------",
-        styles: const PosStyles(bold: true),
-      );
-      bytes += generator!.emptyLines(1);
-
+      bytes += generator!.hr(); // ---------------------------------------------
+      bytes += generator!.text("DADOS DO CLIENTE");
       // Customer
-      bytes += generator!.text(order.customer.name.removeDiacritics());
-      bytes += generator!.text(order.customer.phone);
-      bytes += generator!.text('(Entregar no endereço)');
-      bytes += generator!.text(order.customer.address.removeDiacritics());
-      bytes += generator!.hr();
-      bytes += generator!.emptyLines(1);
+      bytes += generator!.text(_createLine(
+        "NOME",
+        order.customer.name.removeDiacritics(),
+      ));
+      bytes += generator!.text(_createLine("CELULAR", order.customer.phone));
+      bytes += generator!.text(_createLine(
+        "ENDERECO",
+        order.customer.address.removeDiacritics(),
+      ));
+      bytes += generator!.hr(); // ---------------------------------------------
 
       // Order
       bytes += generator!.text(
         order.order.deliveryType == 'Berdan'
             ? 'Entregador: Berdan'
             : 'Entregador: Entrega Propria',
-        linesAfter: 1,
         styles: const PosStyles(align: PosAlign.center),
       );
 
       if (order.order.orderCode != null) {
         bytes += generator!.text(
           'Numero do pedido: ${order.order.orderCode!}',
-          linesAfter: 1,
           styles: const PosStyles(align: PosAlign.center, bold: true),
         );
       }
       bytes += generator!.text(
         'Origem: ${order.order.origin..removeDiacritics()}',
-        linesAfter: 1,
-        styles: const PosStyles(align: PosAlign.center, bold: true),
+        styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += generator!.emptyLines(1);
       bytes += generator!.text(
         "+----------------------------------------+",
       );
@@ -109,7 +109,6 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.row([
         PosColumn(
           text: '|QTD',
-          width: 2,
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
@@ -151,7 +150,6 @@ class TextGeneratorService implements ITextGeneratorService {
             bytes += generator!.row([
               PosColumn(
                 text: "|+ ${adicional.quantity}",
-                width: 2,
               ),
               PosColumn(
                 text: adicional.adicional.removeDiacritics(),
@@ -179,7 +177,6 @@ class TextGeneratorService implements ITextGeneratorService {
             bytes += generator!.row([
               PosColumn(
                 text: "|+",
-                width: 2,
               ),
               PosColumn(
                 text: opcional.opcional.removeDiacritics(),
@@ -240,11 +237,22 @@ class TextGeneratorService implements ITextGeneratorService {
         PosColumn(
           text: "= TOTAL A PAGAR:",
           width: 6,
+          styles: const PosStyles(
+            align: PosAlign.left,
+            reverse: true,
+            height: PosTextSize.size2,
+            width: PosTextSize.size2,
+          ),
         ),
         PosColumn(
-          text: order.valuesOrder.priceTotal.toString(),
+          text: " ${order.valuesOrder.priceTotal.toBRL()} ",
           width: 6,
-          styles: const PosStyles(align: PosAlign.right),
+          styles: const PosStyles(
+            align: PosAlign.right,
+            reverse: true,
+            height: PosTextSize.size2,
+            width: PosTextSize.size2,
+          ),
         ),
       ]);
       bytes += generator!.emptyLines(1);
