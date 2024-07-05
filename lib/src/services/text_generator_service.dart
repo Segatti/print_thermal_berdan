@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:print_thermal_berdan/src/interfaces/text_generator_service.dart';
+import 'package:print_thermal_berdan/src/models/exception_print_thermal.dart';
 import 'package:print_thermal_berdan/src/models/order_receipt.dart';
 
 class TextGeneratorService implements ITextGeneratorService {
@@ -8,64 +12,239 @@ class TextGeneratorService implements ITextGeneratorService {
   @override
   Future<void> init({required PaperSize paperSize}) async {
     final profile = await CapabilityProfile.load();
-    generator = Generator(PaperSize.mm80, profile);
+    generator = Generator(paperSize, profile, codec: const Utf8Codec());
+    generator!.setGlobalCodeTable("CP860");
   }
 
   @override
-  Future<List<int>> generateOrder({required OrderReceipt order}) async {
-    final profile = await CapabilityProfile.load();
-    final generator = Generator(PaperSize.mm80, profile);
-    List<int> bytes = [];
+  List<int> generateOrder({required OrderReceipt order}) {
+    if (generator != null) {
+      List<int> bytes = [];
+      var dateFormat = DateFormat("dd/MM/yyyy hh:mm");
 
-    bytes += generator.text(
-        'Regular: aA bB cC dD eE fF gG hH iI jJ kK lL mM nN oO pP qQ rR sS tT uU vV wW xX yY zZ');
-    bytes += generator.text('Special 1: àÀ èÈ éÉ ûÛ üÜ çÇ ôÔ',
-        styles: const PosStyles(codeTable: 'CP1252'));
-    bytes += generator.text('Special 2: blåbærgrød',
-        styles: const PosStyles(codeTable: 'CP1252'));
+      // Company
+      bytes += generator!.text(
+        order.company.name,
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.text(
+        order.company.address,
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.text(
+        order.company.phone,
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.text(
+        'CNPJ: ${order.company.cnpj}',
+        styles: const PosStyles(align: PosAlign.center),
+      );
 
-    bytes += generator.text('Bold text', styles: const PosStyles(bold: true));
-    bytes +=
-        generator.text('Reverse text', styles: const PosStyles(reverse: true));
-    bytes += generator.text('Underlined text',
-        styles: const PosStyles(underline: true), linesAfter: 1);
-    bytes += generator.text('Align left',
-        styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('Align center',
-        styles: const PosStyles(align: PosAlign.center));
-    bytes += generator.text('Align right',
-        styles: const PosStyles(align: PosAlign.right), linesAfter: 1);
+      bytes += generator!.hr();
 
-    bytes += generator.row([
-      PosColumn(
-        text: 'col3',
-        width: 3,
-        styles: const PosStyles(align: PosAlign.center, underline: true),
-      ),
-      PosColumn(
-        text: 'col6',
-        width: 6,
-        styles: const PosStyles(align: PosAlign.center, underline: true),
-      ),
-      PosColumn(
-        text: 'col3',
-        width: 3,
-        styles: const PosStyles(align: PosAlign.center, underline: true),
-      ),
-    ]);
-
-    bytes += generator.text('Text size 200%',
+      // Avisos
+      bytes += generator!.text(
+        'IMPRESSO EM ${dateFormat.format(DateTime.now())}',
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.text(
+        'SIMPLES CONFERÊNCIA DA CONTA',
         styles: const PosStyles(
-          height: PosTextSize.size2,
-          width: PosTextSize.size2,
-        ));
+          align: PosAlign.center,
+          codeTable: "CP860",
+        ),
+      );
+      bytes += generator!.text(
+        'RELATÓRIO GERENCIAL',
+        styles: const PosStyles(align: PosAlign.center),
+        linesAfter: 1,
+      );
+      bytes += generator!.text(
+        '*** NÃO É DOCUMENTO FISCAL ***',
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      bytes += generator!.hr();
+      bytes += generator!.emptyLines(1);
 
-    // Print barcode
-    final List<int> barData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 4];
-    bytes += generator.barcode(Barcode.upcA(barData));
+      // Customer
+      bytes += generator!.text(order.company.name);
+      bytes += generator!.text(order.company.phone);
+      bytes += generator!.text('(Entregar no endereço)');
+      bytes += generator!.text(order.company.address);
+      bytes += generator!.hr();
+      bytes += generator!.emptyLines(1);
 
-    bytes += generator.feed(2);
-    bytes += generator.cut();
-    return bytes;
+      // Order
+      bytes += generator!.text(
+          order.order.deliveryType == 'Berdan'
+              ? 'Entregador: Berdan'
+              : 'Entregador: Entrega Própria',
+          linesAfter: 1);
+
+      if (order.order.orderCode != null) {
+        bytes += generator!.text(
+          'Número do pedido: ${order.order.orderCode!}',
+          linesAfter: 1,
+          styles: const PosStyles(align: PosAlign.center, bold: true),
+        );
+      }
+      bytes += generator!.text(
+        'Origem: ${order.order.origin}',
+        linesAfter: 1,
+        styles: const PosStyles(align: PosAlign.center, bold: true),
+      );
+      bytes += generator!.emptyLines(1);
+      bytes += generator!.row([
+        PosColumn(
+          text: 'QTD',
+          width: 2,
+          styles: const PosStyles(underline: true),
+        ),
+        PosColumn(
+          text: 'ITEM',
+          width: 7,
+          styles: const PosStyles(underline: true),
+        ),
+        PosColumn(
+          text: 'TOTAL',
+          width: 3,
+          styles: const PosStyles(underline: true),
+        ),
+      ]);
+      for (var item in order.itemsOrder.cartList) {
+        bytes += generator!.row([
+          PosColumn(
+            text: item.quantity.toString(),
+            width: 2,
+          ),
+          PosColumn(
+            text: item.name,
+            width: 7,
+          ),
+          PosColumn(
+            text: (item.price * item.quantity).toString(),
+            width: 3,
+          ),
+        ]);
+        if (item.adicionais.isNotEmpty) {
+          bytes += generator!.row([
+            PosColumn(
+              text: 'Adicionais',
+              width: 12,
+              styles: const PosStyles(bold: true),
+            ),
+          ]);
+          for (var adicional in item.adicionais) {
+            bytes += generator!.row([
+              PosColumn(
+                text: "+ ${adicional.quantity}",
+                width: 2,
+              ),
+              PosColumn(
+                text: adicional.adicional,
+                width: 7,
+              ),
+              PosColumn(
+                text: (adicional.price != null)
+                    ? (adicional.price! * adicional.quantity).toString()
+                    : "--",
+                width: 3,
+              ),
+            ]);
+          }
+        }
+        if (item.opcionais.isNotEmpty) {
+          bytes += generator!.row([
+            PosColumn(
+              text: 'Opcionais',
+              width: 12,
+              styles: const PosStyles(bold: true),
+            ),
+          ]);
+          for (var opcional in item.opcionais) {
+            bytes += generator!.row([
+              PosColumn(
+                text: "+",
+                width: 2,
+              ),
+              PosColumn(
+                text: opcional.opcional,
+                width: 7,
+              ),
+              PosColumn(
+                text: (opcional.price != null)
+                    ? (opcional.price!).toString()
+                    : "--",
+                width: 3,
+              ),
+            ]);
+          }
+        }
+        bytes += generator!.emptyLines(1);
+      }
+      bytes += generator!.hr();
+
+      // Total
+      bytes += generator!.row([
+        PosColumn(
+          text: "TOTAL:",
+          width: 6,
+        ),
+        PosColumn(
+          text: order.valuesOrder.priceTotal.toString(),
+          width: 6,
+        ),
+      ]);
+      bytes += generator!.row([
+        PosColumn(
+          text: "- DESCONTO:",
+          width: 6,
+        ),
+        PosColumn(
+          text: order.valuesOrder.discount.toString(),
+          width: 6,
+        ),
+      ]);
+      bytes += generator!.row([
+        PosColumn(
+          text: "+ ENTREGA:",
+          width: 6,
+        ),
+        PosColumn(
+          text: order.valuesOrder.deliveryFee.toString(),
+          width: 6,
+        ),
+      ]);
+      bytes += generator!.row([
+        PosColumn(
+          text: "= TOTAL A PAGAR:",
+          width: 6,
+        ),
+        PosColumn(
+          text: order.valuesOrder.subtotal.toString(),
+          width: 6,
+        ),
+      ]);
+      bytes += generator!.emptyLines(1);
+      bytes += generator!.text("FORMA DE PAGAMENTO");
+      bytes += generator!.text(
+        order.valuesOrder.paymentForm,
+        styles: const PosStyles(
+          bold: true,
+        ),
+      );
+      // if (image != null) {
+      //   bytes += generator!.emptyLines(2);
+      //   bytes += generator!.imageRaster(image!, imageFn: PosImageFn.graphics);
+      // }
+
+      bytes += generator!.emptyLines(2);
+      bytes += generator!.cut();
+      bytes += generator!.beep(n: 2);
+
+      return bytes;
+    } else {
+      throw ExceptionPrintThermalBerdan("Serviço de texto não iniciado");
+    }
   }
 }

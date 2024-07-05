@@ -15,6 +15,7 @@ dependencies:
   flutter_esc_pos_utils: ^1.0.1
   intl: ^0.19.0
   image: ^4.2.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
