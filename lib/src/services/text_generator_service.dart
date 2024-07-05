@@ -239,9 +239,6 @@ class TextGeneratorService implements ITextGeneratorService {
           width: 6,
           styles: const PosStyles(
             align: PosAlign.left,
-            reverse: true,
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
           ),
         ),
         PosColumn(
@@ -250,8 +247,6 @@ class TextGeneratorService implements ITextGeneratorService {
           styles: const PosStyles(
             align: PosAlign.right,
             reverse: true,
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
           ),
         ),
       ]);
