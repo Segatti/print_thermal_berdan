@@ -31,6 +31,11 @@ class TextGeneratorService implements ITextGeneratorService {
     if (generator != null) {
       List<int> bytes = [];
       var dateFormat = DateFormat("dd/MM/yyyy hh:mm");
+      bytes += generator!.clearStyle();
+
+      bytes += generator!.text(
+        "+-------------| EMPRESA |----------------+",
+      );
 
       // Company
       bytes += generator!.text(
@@ -71,7 +76,9 @@ class TextGeneratorService implements ITextGeneratorService {
         styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.hr(len: 42); // -------------------------------------
-      bytes += generator!.text("DADOS DO CLIENTE");
+      bytes += generator!.text(
+        "+-------------| CLIENTE |----------------+",
+      );
       // Customer
       bytes += generator!.text(_createLine(
         "NOME",
@@ -105,10 +112,20 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.text(
         "+----------------------------------------+",
       );
+      bytes += generator!.text(
+        "PEDIDO",
+        styles: const PosStyles(
+          align: PosAlign.center,
+          bold: true,
+        ),
+      );
+      bytes += generator!.text(
+        "+----------------------------------------+",
+      );
 
       bytes += generator!.row([
         PosColumn(
-          text: '|QTD',
+          text: 'QTD',
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
@@ -117,7 +134,7 @@ class TextGeneratorService implements ITextGeneratorService {
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
-          text: 'TOTAL|',
+          text: 'TOTAL',
           width: 3,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -125,7 +142,7 @@ class TextGeneratorService implements ITextGeneratorService {
       for (var item in order.itemsOrder.cartList) {
         bytes += generator!.row([
           PosColumn(
-            text: "|${item.quantity}",
+            text: "${item.quantity}",
             width: 2,
           ),
           PosColumn(
@@ -133,7 +150,7 @@ class TextGeneratorService implements ITextGeneratorService {
             width: 7,
           ),
           PosColumn(
-            text: "${item.price.toBRL()}|",
+            text: item.price.toBRL(),
             width: 3,
             styles: const PosStyles(align: PosAlign.right),
           ),
@@ -141,7 +158,8 @@ class TextGeneratorService implements ITextGeneratorService {
         if (item.adicionais.isNotEmpty) {
           bytes += generator!.row([
             PosColumn(
-              text: '|  Adicionais',
+              text:
+                  '  Adicionaisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
               width: 12,
               styles: const PosStyles(bold: true),
             ),
@@ -149,16 +167,15 @@ class TextGeneratorService implements ITextGeneratorService {
           for (var adicional in item.adicionais) {
             bytes += generator!.row([
               PosColumn(
-                text: "|+ ${adicional.quantity}",
+                text: "+ ${adicional.quantity}",
               ),
               PosColumn(
                 text: adicional.adicional.removeDiacritics(),
                 width: 7,
               ),
               PosColumn(
-                text: (adicional.price != null)
-                    ? "${adicional.price!.toBRL()}|"
-                    : "--|",
+                text:
+                    (adicional.price != null) ? adicional.price!.toBRL() : "--",
                 width: 3,
                 styles: const PosStyles(align: PosAlign.right),
               ),
@@ -168,7 +185,7 @@ class TextGeneratorService implements ITextGeneratorService {
         if (item.opcionais.isNotEmpty) {
           bytes += generator!.row([
             PosColumn(
-              text: '|  Opcionais',
+              text: '  Opcionais',
               width: 12,
               styles: const PosStyles(bold: true),
             ),
@@ -176,16 +193,14 @@ class TextGeneratorService implements ITextGeneratorService {
           for (var opcional in item.opcionais) {
             bytes += generator!.row([
               PosColumn(
-                text: "|+",
+                text: "+",
               ),
               PosColumn(
                 text: opcional.opcional.removeDiacritics(),
                 width: 7,
               ),
               PosColumn(
-                text: (opcional.price != null)
-                    ? "${opcional.price!.toBRL()}|"
-                    : "--|",
+                text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
                 width: 3,
                 styles: const PosStyles(align: PosAlign.right),
               ),
@@ -194,10 +209,9 @@ class TextGeneratorService implements ITextGeneratorService {
         }
         bytes += generator!.text(
           "+----------------------------------------+",
-          styles: const PosStyles(bold: true),
         );
       }
-      bytes += generator!.hr(len: 42);
+      bytes += generator!.hr(ch: "=", len: 42);
 
       // Total
       bytes += generator!.row([
@@ -250,6 +264,7 @@ class TextGeneratorService implements ITextGeneratorService {
           ),
         ),
       ]);
+      bytes += generator!.hr(ch: "=", len: 42);
       bytes += generator!.emptyLines(1);
       bytes += generator!.text("FORMA DE PAGAMENTO");
       bytes += generator!.text(
