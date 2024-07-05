@@ -39,7 +39,7 @@ class PrintThermalPresenter {
   }
 
   Future<bool> sendToPrinter(OrderReceipt order) async {
-    await _textService.init(paperSize: PaperSize.mm80);
+    await _textService.init(paperSize: PaperSize.mm72);
     var data = _textService.generateOrder(order: order);
     return await _printerService.sendToPrint(
       bytes: data,

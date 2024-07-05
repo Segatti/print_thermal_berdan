@@ -8,7 +8,7 @@ extension ExtString on String {
     var newString = this;
 
     for (int i = 0; i < withDia.length; i++) {
-      newString.replaceAll(withDia[i], withoutDia[i]);
+      newString = newString.replaceAll(withDia[i], withoutDia[i]);
     }
 
     return newString;
