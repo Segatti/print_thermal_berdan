@@ -50,7 +50,7 @@ class TextGeneratorService implements ITextGeneratorService {
         styles: const PosStyles(align: PosAlign.center),
       );
 
-      bytes += generator!.hr();
+      bytes += generator!.hr(len: 42); // -------------------------------------
 
       // Avisos
       bytes += generator!.text(
@@ -70,7 +70,7 @@ class TextGeneratorService implements ITextGeneratorService {
         '*** NAO E DOCUMENTO FISCAL ***',
         styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += generator!.hr(); // ---------------------------------------------
+      bytes += generator!.hr(len: 42); // -------------------------------------
       bytes += generator!.text("DADOS DO CLIENTE");
       // Customer
       bytes += generator!.text(_createLine(
@@ -82,7 +82,7 @@ class TextGeneratorService implements ITextGeneratorService {
         "ENDERECO",
         order.customer.address.removeDiacritics(),
       ));
-      bytes += generator!.hr(); // ---------------------------------------------
+      bytes += generator!.hr(len: 42); // -------------------------------------
 
       // Order
       bytes += generator!.text(
@@ -197,7 +197,7 @@ class TextGeneratorService implements ITextGeneratorService {
           styles: const PosStyles(bold: true),
         );
       }
-      bytes += generator!.hr();
+      bytes += generator!.hr(len: 42);
 
       // Total
       bytes += generator!.row([
