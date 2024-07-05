@@ -6,6 +6,7 @@ class DataValuesOrder {
   final num discount;
   final num priceTotal;
   final String paymentForm;
+  final bool isPaid;
 
   const DataValuesOrder({
     this.subtotal = 0,
@@ -13,6 +14,7 @@ class DataValuesOrder {
     this.discount = 0,
     this.priceTotal = 0,
     this.paymentForm = "",
+    this.isPaid = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class DataValuesOrder {
       'discount': discount,
       'priceTotal': priceTotal,
       'paymentForm': paymentForm,
+      'paid': isPaid,
     };
   }
 
@@ -32,6 +35,7 @@ class DataValuesOrder {
       discount: map['discount'] ?? 0,
       priceTotal: map['priceTotal'] ?? 0,
       paymentForm: map['paymentForm'] ?? "",
+      isPaid: map['paid'] ?? false,
     );
   }
 

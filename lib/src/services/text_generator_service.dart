@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:print_thermal_berdan/src/interfaces/text_generator_service.dart';
@@ -23,7 +25,6 @@ class TextGeneratorService implements ITextGeneratorService {
     var bytes = <int>[];
     bytes += generator!.text(
       "+----------------------------------------+",
-      styles: const PosStyles(reverse: true),
     );
     bytes += generator!.text(
       title,
@@ -46,9 +47,8 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.clearStyle();
 
       bytes +=
-          generator!.hr(ch: "<>", len: 42); // ------------------------------
-      // Avisos
-      bytes += generator!.text(
+          // Avisos
+          bytes += generator!.text(
         'IMPRESSO EM ${dateFormat.format(DateTime.now())}',
         styles: const PosStyles(align: PosAlign.center),
       );
@@ -65,9 +65,12 @@ class TextGeneratorService implements ITextGeneratorService {
         '*** NAO E DOCUMENTO FISCAL ***',
         styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += generator!.hr(len: 42); // -------------------------------------
 
-      bytes += createTitle("EMPRESA");
+      bytes += generator!.text(
+        "+----------------EMPRESA----------------+",
+        linesAfter: 1,
+        styles: const PosStyles(align: PosAlign.center),
+      );
 
       // Company
       bytes += generator!.text(
@@ -87,9 +90,11 @@ class TextGeneratorService implements ITextGeneratorService {
         styles: const PosStyles(align: PosAlign.center),
       );
 
-      bytes += generator!.hr(len: 42); // -------------------------------------
-
-      bytes += createTitle("CLIENTE");
+      bytes += generator!.text(
+        "+----------------CLIENTE----------------+",
+        linesAfter: 1,
+        styles: const PosStyles(align: PosAlign.center),
+      );
 
       // Customer
       bytes += generator!.text(
@@ -110,7 +115,11 @@ class TextGeneratorService implements ITextGeneratorService {
         ),
         styles: const PosStyles(),
       );
-      bytes += generator!.hr(len: 42); // -------------------------------------
+      bytes += generator!.text(
+        "+----------------ENTREGA----------------+",
+        linesAfter: 1,
+        styles: const PosStyles(align: PosAlign.center),
+      );
 
       // Order
       bytes += generator!.text(
@@ -123,19 +132,23 @@ class TextGeneratorService implements ITextGeneratorService {
       if (order.order.orderCode != null) {
         bytes += generator!.text(
           'Numero do pedido: ${order.order.orderCode!}',
-          styles: const PosStyles(align: PosAlign.center, bold: true),
+          styles: const PosStyles(align: PosAlign.center, reverse: true),
         );
       }
       bytes += generator!.text(
         'Origem: ${order.order.origin..removeDiacritics()}',
         styles: const PosStyles(align: PosAlign.center),
       );
-      bytes += createTitle("PEDIDO");
+      bytes += generator!.text(
+        "+---------------PEDIDO----------------+",
+        linesAfter: 1,
+        styles: const PosStyles(align: PosAlign.center),
+      );
 
       bytes += generator!.row([
         PosColumn(
           text: 'QTD',
-          styles: const PosStyles(align: PosAlign.left),
+          styles: const PosStyles(align: PosAlign.center),
         ),
         PosColumn(
           text: 'ITEM',
@@ -148,38 +161,43 @@ class TextGeneratorService implements ITextGeneratorService {
           styles: const PosStyles(align: PosAlign.right),
         ),
       ]);
-      for (var item in order.itemsOrder.cartList) {
+      for (var i = 0; i < order.itemsOrder.cartList.length; i++) {
         bytes += generator!.row([
           PosColumn(
-            text: "${item.quantity}x",
-            styles: const PosStyles(align: PosAlign.right),
+            text: "${order.itemsOrder.cartList[i].quantity}x",
+            styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
-            text: item.name.removeDiacritics(),
+            text: order.itemsOrder.cartList[i].name.removeDiacritics(),
             width: 7,
           ),
           PosColumn(
-            text: item.price.toBRL(),
+            text: order.itemsOrder.cartList[i].price.toBRL(),
             width: 3,
             styles: const PosStyles(align: PosAlign.right),
           ),
         ]);
-        if (item.opcionais.isNotEmpty) {
+        if (order.itemsOrder.cartList[i].opcionais.isNotEmpty) {
           bytes += generator!.row([
+            PosColumn(width: 1),
             PosColumn(
-              text: '  Opcionais',
-              width: 12,
+              text: 'Opcionais',
+              width: 11,
               styles: const PosStyles(bold: true),
             ),
           ]);
-          for (var opcional in item.opcionais) {
+          for (var opcional in order.itemsOrder.cartList[i].opcionais) {
             bytes += generator!.row([
               PosColumn(
                 text: "+",
                 styles: const PosStyles(align: PosAlign.right),
               ),
               PosColumn(
-                text: opcional.opcional.removeDiacritics(),
+                textEncoded: Uint8List.fromList(
+                  generator!.text(
+                    opcional.opcional.removeDiacritics(),
+                  ),
+                ),
                 width: 7,
               ),
               PosColumn(
@@ -191,24 +209,27 @@ class TextGeneratorService implements ITextGeneratorService {
           }
         }
 
-        if (item.adicionais.isNotEmpty) {
+        if (order.itemsOrder.cartList[i].adicionais.isNotEmpty) {
           bytes += generator!.row([
             PosColumn(width: 1),
             PosColumn(
-              text:
-                  'Adicionaisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
+              text: 'Adicionais',
               width: 11,
               styles: const PosStyles(bold: true),
             ),
           ]);
-          for (var adicional in item.adicionais) {
+          for (var adicional in order.itemsOrder.cartList[i].adicionais) {
             bytes += generator!.row([
               PosColumn(
-                text: "+ ${adicional.quantity}x",
-                styles: const PosStyles(align: PosAlign.right),
+                text: "+${adicional.quantity}x",
+                styles: const PosStyles(align: PosAlign.center),
               ),
               PosColumn(
-                text: adicional.adicional.removeDiacritics(),
+                textEncoded: Uint8List.fromList(
+                  generator!.text(
+                    adicional.adicional.removeDiacritics(),
+                  ),
+                ),
                 width: 7,
               ),
               PosColumn(
@@ -221,11 +242,12 @@ class TextGeneratorService implements ITextGeneratorService {
           }
         }
 
-        bytes += generator!.text(
-          "+----------------------------------------+",
-        );
+        if ((i + 1) < order.itemsOrder.cartList.length) {
+          bytes += generator!.hr(len: 42);
+        }
       }
 
+      bytes += generator!.hr(ch: "=", len: 42);
       // Total
       bytes += generator!.row([
         PosColumn(
@@ -262,7 +284,7 @@ class TextGeneratorService implements ITextGeneratorService {
       ]);
       bytes += generator!.row([
         PosColumn(
-          text: "= TOTAL A PAGAR:",
+          text: "= TOTAL:",
           width: 6,
           styles: const PosStyles(
             align: PosAlign.left,
@@ -277,14 +299,16 @@ class TextGeneratorService implements ITextGeneratorService {
           ),
         ),
       ]);
-      bytes += generator!.hr(ch: "=", len: 42);
+      bytes += generator!.hr(len: 42);
       bytes += generator!.emptyLines(1);
       bytes += generator!.text("FORMA DE PAGAMENTO");
       bytes += generator!.text(
         order.valuesOrder.paymentForm.removeDiacritics(),
-        styles: const PosStyles(
-          bold: true,
-        ),
+        styles: const PosStyles(bold: true),
+      );
+      bytes += generator!.text(
+        order.valuesOrder.isPaid ? "PAGO" : "A PAGAR",
+        styles: const PosStyles(reverse: true),
       );
       bytes += generator!.emptyLines(1);
       // if (image != null) {
@@ -292,7 +316,6 @@ class TextGeneratorService implements ITextGeneratorService {
       //   bytes += generator!.imageRaster(image!, imageFn: PosImageFn.graphics);
       // }
 
-      generator!.hr(ch: "<>", len: 42); // ------------------------------
       bytes += generator!.cut();
 
       return bytes;
