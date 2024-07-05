@@ -13,4 +13,13 @@ extension ExtString on String {
 
     return newString;
   }
+
+  String genereateSpace(int lenghtFixed) {
+    var string = this;
+    if (length < lenghtFixed) {
+      var dif = lenghtFixed - length;
+      string = string.padRight(dif);
+    }
+    return string;
+  }
 }
