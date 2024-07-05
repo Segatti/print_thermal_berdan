@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter_esc_pos_utils/flutter_esc_pos_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:print_thermal_berdan/src/interfaces/text_generator_service.dart';
 import 'package:print_thermal_berdan/src/models/exception_print_thermal.dart';
+import 'package:print_thermal_berdan/src/models/extends/ext_string.dart';
 import 'package:print_thermal_berdan/src/models/order_receipt.dart';
 
 class TextGeneratorService implements ITextGeneratorService {
@@ -12,8 +11,7 @@ class TextGeneratorService implements ITextGeneratorService {
   @override
   Future<void> init({required PaperSize paperSize}) async {
     final profile = await CapabilityProfile.load();
-    generator = Generator(paperSize, profile, codec: const Utf8Codec());
-    generator!.setGlobalCodeTable("CP860");
+    generator = Generator(paperSize, profile);
   }
 
   @override
@@ -24,11 +22,11 @@ class TextGeneratorService implements ITextGeneratorService {
 
       // Company
       bytes += generator!.text(
-        order.company.name,
+        order.company.name.removeDiacritics(),
         styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.text(
-        order.company.address,
+        order.company.address.removeDiacritics(),
         styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.text(
@@ -48,29 +46,26 @@ class TextGeneratorService implements ITextGeneratorService {
         styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.text(
-        'SIMPLES CONFERÊNCIA DA CONTA',
-        styles: const PosStyles(
-          align: PosAlign.center,
-          codeTable: "CP860",
-        ),
+        'SIMPLES CONFERENCIA DA CONTA',
+        styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.text(
-        'RELATÓRIO GERENCIAL',
+        'RELATORIO GERENCIAL',
         styles: const PosStyles(align: PosAlign.center),
         linesAfter: 1,
       );
       bytes += generator!.text(
-        '*** NÃO É DOCUMENTO FISCAL ***',
+        '*** NAO E DOCUMENTO FISCAL ***',
         styles: const PosStyles(align: PosAlign.center),
       );
       bytes += generator!.hr();
       bytes += generator!.emptyLines(1);
 
       // Customer
-      bytes += generator!.text(order.company.name);
-      bytes += generator!.text(order.company.phone);
+      bytes += generator!.text(order.customer.name.removeDiacritics());
+      bytes += generator!.text(order.customer.phone);
       bytes += generator!.text('(Entregar no endereço)');
-      bytes += generator!.text(order.company.address);
+      bytes += generator!.text(order.customer.address.removeDiacritics());
       bytes += generator!.hr();
       bytes += generator!.emptyLines(1);
 
@@ -78,18 +73,18 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.text(
           order.order.deliveryType == 'Berdan'
               ? 'Entregador: Berdan'
-              : 'Entregador: Entrega Própria',
+              : 'Entregador: Entrega Propria',
           linesAfter: 1);
 
       if (order.order.orderCode != null) {
         bytes += generator!.text(
-          'Número do pedido: ${order.order.orderCode!}',
+          'Numero do pedido: ${order.order.orderCode!}',
           linesAfter: 1,
           styles: const PosStyles(align: PosAlign.center, bold: true),
         );
       }
       bytes += generator!.text(
-        'Origem: ${order.order.origin}',
+        'Origem: ${order.order.origin..removeDiacritics()}',
         linesAfter: 1,
         styles: const PosStyles(align: PosAlign.center, bold: true),
       );
@@ -118,7 +113,7 @@ class TextGeneratorService implements ITextGeneratorService {
             width: 2,
           ),
           PosColumn(
-            text: item.name,
+            text: item.name.removeDiacritics(),
             width: 7,
           ),
           PosColumn(
@@ -141,7 +136,7 @@ class TextGeneratorService implements ITextGeneratorService {
                 width: 2,
               ),
               PosColumn(
-                text: adicional.adicional,
+                text: adicional.adicional.removeDiacritics(),
                 width: 7,
               ),
               PosColumn(
@@ -168,7 +163,7 @@ class TextGeneratorService implements ITextGeneratorService {
                 width: 2,
               ),
               PosColumn(
-                text: opcional.opcional,
+                text: opcional.opcional.removeDiacritics(),
                 width: 7,
               ),
               PosColumn(
@@ -228,7 +223,7 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.emptyLines(1);
       bytes += generator!.text("FORMA DE PAGAMENTO");
       bytes += generator!.text(
-        order.valuesOrder.paymentForm,
+        order.valuesOrder.paymentForm.removeDiacritics(),
         styles: const PosStyles(
           bold: true,
         ),
@@ -239,6 +234,7 @@ class TextGeneratorService implements ITextGeneratorService {
       // }
 
       bytes += generator!.emptyLines(2);
+      bytes += generator!.cut();
 
       return bytes;
     } else {
