@@ -40,10 +40,7 @@ class TextGeneratorService implements ITextGeneratorService {
       //   styles: const PosStyles(align: PosAlign.center),
       // );
 
-      bytes += generator!.hr();
-      bytes += generator!.rawBytes(generator!.hr());
       bytes += "----\n".codeUnits;
-      bytes += generator!.rawBytes("----\n".codeUnits);
 
       // Avisos
       // bytes += generator!.text(
@@ -241,8 +238,7 @@ class TextGeneratorService implements ITextGeneratorService {
       //   bytes += generator!.imageRaster(image!, imageFn: PosImageFn.graphics);
       // }
 
-      bytes += generator!.emptyLines(2);
-      bytes += generator!.cut();
+      bytes += generator!.emptyLines(1);
 
       return bytes;
     } else {
