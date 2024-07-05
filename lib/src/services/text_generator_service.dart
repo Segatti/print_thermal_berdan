@@ -197,7 +197,7 @@ class TextGeneratorService implements ITextGeneratorService {
             PosColumn(
               text:
                   'Adicionaisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
-              width: 12,
+              width: 11,
               styles: const PosStyles(bold: true),
             ),
           ]);
