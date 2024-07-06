@@ -183,7 +183,7 @@ class TextGeneratorService implements ITextGeneratorService {
       );
       bytes += generator!.emptyLines(1);
       bytes += generator!.text(
-        "+---------------PEDIDO----------------+",
+        "+----------------PEDIDO-----------------+",
         linesAfter: 1,
         styles: const PosStyles(align: PosAlign.center),
       );
@@ -195,8 +195,11 @@ class TextGeneratorService implements ITextGeneratorService {
         ),
         PosColumn(
           text: 'ITEM',
-          width: 7,
+          width: 6,
           styles: const PosStyles(align: PosAlign.left),
+        ),
+        PosColumn(
+          width: 1,
         ),
         PosColumn(
           text: 'TOTAL',
@@ -212,7 +215,10 @@ class TextGeneratorService implements ITextGeneratorService {
           ),
           PosColumn(
             text: order.itemsOrder.cartList[i].name.removeDiacritics(),
-            width: 7,
+            width: 6,
+          ),
+          PosColumn(
+            width: 1,
           ),
           PosColumn(
             text: order.itemsOrder.cartList[i].price.toBRL(),
@@ -236,7 +242,10 @@ class TextGeneratorService implements ITextGeneratorService {
                 textEncoded: Uint8List.fromList(
                   generator!.text("- ${opcional.opcional.removeDiacritics()}"),
                 ),
-                width: 8,
+                width: 7,
+              ),
+              PosColumn(
+                width: 1,
               ),
               PosColumn(
                 text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
@@ -265,7 +274,10 @@ class TextGeneratorService implements ITextGeneratorService {
                     "+${adicional.quantity}x ${adicional.adicional.removeDiacritics()}",
                   ),
                 ),
-                width: 8,
+                width: 7,
+              ),
+              PosColumn(
+                width: 1,
               ),
               PosColumn(
                 text:
