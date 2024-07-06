@@ -22,7 +22,7 @@ class DataValuesOrder {
       'subtotal': subtotal,
       'deliveryFee': deliveryFee,
       'discount': discount,
-      'priceTotal': priceTotal,
+      'total': priceTotal,
       'paymentMethod': paymentMethod,
       'paid': isPaid,
     };
@@ -33,7 +33,7 @@ class DataValuesOrder {
       subtotal: map['subtotal'] ?? 0,
       deliveryFee: map['deliveryFee'] ?? 0,
       discount: map['discount'] ?? 0,
-      priceTotal: map['priceTotal'] ?? 0,
+      priceTotal: map['total'] ?? 0,
       paymentMethod: map['paymentMethod'] ?? "",
       isPaid: map['paid'] ?? false,
     );

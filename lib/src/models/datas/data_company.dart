@@ -17,7 +17,7 @@ class DataCompany {
     return <String, dynamic>{
       'entName': name,
       'cnpj': cnpj,
-      'fullAddress': address,
+      'entFullAddress': address,
       'entWhatsapp': phone,
     };
   }
@@ -26,7 +26,7 @@ class DataCompany {
     return DataCompany(
       name: map['entName'] ?? "",
       cnpj: map['cnpj'] ?? "",
-      address: map['fullAddress'] ?? "",
+      address: map['entFullAddress'] ?? "",
       phone: map['entWhatsapp'] ?? "",
     );
   }

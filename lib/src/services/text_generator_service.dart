@@ -60,11 +60,19 @@ class TextGeneratorService implements ITextGeneratorService {
     if (generator != null) {
       List<int> bytes = [];
       var dateFormat = DateFormat("dd/MM/yyyy hh:mm");
-      bytes += generator!.clearStyle();
+      bytes += generator!.setStyles(
+        const PosStyles(
+          bold: false,
+          underline: false,
+          align: PosAlign.left,
+          reverse: false,
+          turn90: false,
+        ),
+        isKanji: false,
+      );
 
-      bytes +=
-          // Avisos
-          bytes += generator!.text(
+      // Avisos
+      bytes += generator!.text(
         'IMPRESSO EM ${dateFormat.format(DateTime.now())}',
         styles: const PosStyles(align: PosAlign.center),
       );
@@ -335,11 +343,11 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.emptyLines(1);
       if (imageAsset.isNotEmpty) {
         final ByteData data = await rootBundle.load(imageAsset);
-        final Uint8List bytes = data.buffer.asUint8List();
-        final Image? image = decodeImage(bytes);
+        final Uint8List imgBytes = data.buffer.asUint8List();
+        final Image? image = decodeImage(imgBytes);
         // Using `ESC *`
         if (image != null) {
-          generator!.image(image);
+          bytes += generator!.image(image);
         }
       }
 
