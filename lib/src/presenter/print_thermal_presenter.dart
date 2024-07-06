@@ -38,9 +38,15 @@ class PrintThermalPresenter {
     return await _printerService.disconnectPrinter(type: typeConnection);
   }
 
-  Future<bool> sendToPrinter(OrderReceipt order) async {
+  Future<bool> sendToPrinter(
+    OrderReceipt order, {
+    String imageAsset = "",
+  }) async {
     await _textService.init(paperSize: PaperSize.mm80);
-    var data = _textService.generateOrder(order: order);
+    var data = await _textService.generateOrder(
+      order: order,
+      imageAsset: imageAsset,
+    );
     return await _printerService.sendToPrint(
       bytes: data,
       type: typeConnection,

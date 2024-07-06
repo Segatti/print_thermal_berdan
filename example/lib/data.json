@@ -1,0 +1,313 @@
+[
+  {
+      "entName": "Empresa Exemplo",
+      "subtotal": 2.72,
+      "entWhatsapp": "44999999999",
+      "cartList": [
+        {
+          "pCode": "Pb7mycwni4t1z",
+          "cashbackValue": 0.22739200000000004,
+          "sustainability": 0.0055000000000000005,
+          "sDescription": "Produto exemplo de adicionais e opcionais",
+          "pName": "Adicionais E Opcionais",
+          "pid": "yUMPNmywbWQWArZe0xpg",
+          "smartCashback": 0.020900000000000002,
+          "cashback": 0.08360000000000001,
+          "cashbackExtra": 0.01,
+          "opcionais": [
+            {
+              "opcionaisGroup": "Tamanhos",
+              "opcional": "Tam 1",
+              "image": "",
+              "stock": null,
+              "price": 0.9,
+              "description": "",
+              "index": 0
+            },
+            {
+              "index": 1,
+              "opcional": "Verde",
+              "price": 0.78,
+              "description": "",
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c",
+              "stock": null,
+              "opcionaisGroup": "Cores"
+            },
+            {
+              "opcionaisGroup": "Formato",
+              "description": "",
+              "opcional": "Retangular",
+              "price": 0.24,
+              "stock": null,
+              "index": 2,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c"
+            }
+          ],
+          "productPic": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FproductsImage%2F113768195%2F1648246212750?alt=media&token=4f45a1e0-e97d-44e9-9864-4b668d8ab44f",
+          "pPrice": 2.72,
+          "cashbackTotal": 0.11,
+          "smartCashbackValue": 0.05684800000000001,
+          "makeTime": 11,
+          "adicionais": [
+            {
+              "adicionaisGroup": "Complemento",
+              "quantity": 1,
+              "index": 0,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c",
+              "price": 0.3,
+              "adicional": "Complemento 1"
+            },
+            {
+              "index": 1,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c",
+              "price": 0.5,
+              "adicional": "Extra 1",
+              "quantity": 1,
+              "adicionaisGroup": "Extras"
+            }
+          ],
+          "quantity": 1
+        }
+      ],
+      "clientPhone": null,
+      "cnpj": "21.546.572/0001-40",
+      "origin": "Berdan",
+      "discount": 1.904,
+      "deliveryInstructions": "",
+      "deliveryFullAddress": "Avenida Dois de Junho 3017  76963-827 Cacoal - RO",
+      "deliveryType": "Berdan",
+      "entFullAddress": "Rua Marechal Deodoro da Fonseca 1771  76963-831 Cacoal - RO",
+      "total": 6.816000000000001,
+      "paymentMethod": "pix",
+      "deliveryFee": 6,
+      "clientName": "Rodrigo Oliveira",
+      "logistics": "delivery",
+      "orderCode": "15920"
+    },
+    {
+      "subtotal": 5.0200000000000005,
+      "deliveryType": "Berdan",
+      "clientName": "Rodrigo Oliveira",
+      "deliveryInstructions": "",
+      "total": 8.02,
+      "origin": "Berdan",
+      "entFullAddress": "Rua Marechal Deodoro da Fonseca 1771  76963-831 Cacoal - RO",
+      "cartList": [
+        {
+          "cashbackExtra": 0.01,
+          "pName": "Confirmação de Estoque",
+          "cashbackValue": 0.28006000000000003,
+          "pid": "03EHoNIdaJf1zhyxKOdX",
+          "cashback": 0.08360000000000001,
+          "opcionais": [],
+          "pPrice": 3.35,
+          "quantity": 1,
+          "pCode": "P97mycwni4t2p",
+          "adicionais": [
+            {
+              "price": 0.85,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c",
+              "adicional": "Add 1",
+              "quantity": 1,
+              "adicionaisGroup": "Adicionais teste",
+              "index": 0
+            }
+          ],
+          "productPic": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FproductsImage%2F93299903%2F1648245873238?alt=media&token=855fc937-475a-4750-ab7a-ecce1218eec3",
+          "cashbackTotal": 0.11,
+          "sustainability": 0.0055000000000000005,
+          "smartCashback": 0.020900000000000002,
+          "makeTime": 11,
+          "sDescription": "Produto exemplo de confirmação de estoque",
+          "smartCashbackValue": 0.07001500000000001
+        },
+        {
+          "quantity": 1,
+          "cashback": 0.08360000000000001,
+          "makeTime": 11,
+          "productPic": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FproductsImage%2F113768195%2F1648246212750?alt=media&token=4f45a1e0-e97d-44e9-9864-4b668d8ab44f",
+          "sustainability": 0.0055000000000000005,
+          "cashbackTotal": 0.11,
+          "pid": "yUMPNmywbWQWArZe0xpg",
+          "pPrice": 1.6700000000000002,
+          "adicionais": [
+            {
+              "index": 0,
+              "price": 0.3,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c",
+              "adicionaisGroup": "Complemento",
+              "quantity": 1,
+              "adicional": "Complemento 1"
+            }
+          ],
+          "smartCashback": 0.020900000000000002,
+          "opcionais": [
+            {
+              "description": "",
+              "stock": null,
+              "image": "",
+              "price": 0.9,
+              "opcional": "Tam 1",
+              "index": 0,
+              "opcionaisGroup": "Tamanhos"
+            },
+            {
+              "index": 1,
+              "stock": null,
+              "description": "",
+              "price": 0.47,
+              "opcional": "Vermelho Esc",
+              "opcionaisGroup": "Cores",
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FGAEy9So9sngiUqT9fFF0qvSY9653%2Fpublic%2FentLogo%2F1628099325036?alt=media&token=b8f4cdfc-f31e-4b16-ab6c-c193e0037a2c"
+            }
+          ],
+          "cashbackValue": 0.139612,
+          "cashbackExtra": 0.01,
+          "smartCashbackValue": 0.034903,
+          "pName": "Adicionais E Opcionais",
+          "sDescription": "Produto exemplo de adicionais e opcionais",
+          "pCode": "Pb7mycwni4t1z"
+        }
+      ],
+      "paymentMethod": "cashback",
+      "deliveryFee": 3,
+      "deliveryFullAddress": "Avenida Dois de Junho 3017  76963-827 Cacoal - RO",
+      "clientPhone": null,
+      "cnpj": "21.546.572/0001-40",
+      "entWhatsapp": "44999999999",
+      "discount": 0,
+      "logistics": "delivery",
+      "entName": "Empresa Exemplo",
+      "orderCode": "15913"
+    },
+    {
+      "deliveryType": "Self",
+      "cnpj": "52.368.915/0001-58",
+      "clientName": "Edilaine De Gois Pego ",
+      "deliveryInstructions": "",
+      "logistics": "inloco",
+      "entFullAddress": "Avenida Brasil 6300 sala 1 85.810-000 Cascavel - PR",
+      "discount": 0,
+      "entWhatsapp": "44999999999",
+      "paymentMethod": "cashback",
+      "deliveryFee": 0,
+      "origin": "Berdan",
+      "clientPhone": "(45) 99900-6917",
+      "cartList": [
+        {
+          "cashback": 0.0456,
+          "quantity": 1,
+          "pid": "tnwfEgDETWA1rhulctzN",
+          "productPic": "https://firebasestorage.googleapis.com:443/v0/b/foreverapp-1484f.appspot.com/o/ents%2Fz9S2UULfaVSapWCAlH7bd9xN5jN2%2Fpublic%2FentLogo%2F1705608356141?alt=media&token=683c5aaa-e19f-4ddb-a9bb-aa6401891611",
+          "pCode": "DYN-17ik9y3v61q1d",
+          "adicionais": [],
+          "pName": "Venda personalizada de Boutique Brigadeiria Coffe",
+          "cashbackExtra": 0,
+          "opcionais": [],
+          "smartCashback": 0.0114,
+          "pPrice": 7,
+          "makeTime": 0,
+          "sDescription": "",
+          "smartCashbackValue": 0.07980000000000001,
+          "cashbackValue": 0.31920000000000004,
+          "sustainability": 0.003,
+          "cashbackTotal": 0.06
+        }
+      ],
+      "subtotal": 7,
+      "orderCode": "28287",
+      "deliveryFullAddress": "Rua Luiz Venturim 563  85.811-470 Cascavel - PR",
+      "total": 7,
+      "entName": "Boutique Brigadeiria Coffe"
+    },
+    {
+      "clientPhone": "(44) 99906-4519",
+      "orderCode": "282345",
+      "deliveryType": "Self",
+      "cnpj": "30.670.019/0001-06",
+      "subtotal": 120,
+      "deliveryInstructions": "",
+      "logistics": "inloco",
+      "paymentMethod": "creditcard",
+      "deliveryFee": 0,
+      "entFullAddress": "Avenida Brasil 449  87.050-465 Maringá - PR",
+      "entWhatsapp": "44999999999",
+      "entName": "Studio Barbara Sonda ",
+      "discount": 0,
+      "cartList": [
+        {
+          "smartCashback": 0.013300000000000001,
+          "cashback": 0.053200000000000004,
+          "smartCashbackValue": 1.596,
+          "pName": "Extensão De Cílios - Técnica Volume Realista",
+          "sDescription": "Para quem busca por volume essa é a técnica ideal. Mesmo com mais volume ainda é  leve e delicado🦋",
+          "pid": "gNfLv8nqjFq726GNMZzT",
+          "quantity": 1,
+          "adicionais": [],
+          "cashbackValue": 6.384,
+          "pPrice": 120,
+          "opcionais": [
+            {
+              "description": "",
+              "index": 0,
+              "image": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2F8akA6KBmCnhaAXmheTtJNcAMx3U2%2Fpublic%2FentLogo%2F1614963727818?alt=media&token=03ace41d-6992-4120-8a7e-f2dd0ba71110",
+              "opcional": "Manutenção ",
+              "stock": null,
+              "price": 120,
+              "opcionaisGroup": "Variações"
+            }
+          ],
+          "makeTime": 20,
+          "pCode": "P2avdm1fpd619",
+          "sustainability": 0.0035000000000000005,
+          "productPic": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2F8akA6KBmCnhaAXmheTtJNcAMx3U2%2Fpublic%2FproductsImage%2F28655802%2F1615499409245?alt=media&token=714268ca-b9a9-4e06-8e61-de2905770ede",
+          "cashbackTotal": 0.07,
+          "cashbackExtra": 0
+        }
+      ],
+      "deliveryFullAddress": "Rua Pará 2258 casa 87.023-031 Maringá - PR",
+      "total": 120,
+      "origin": "Berdan",
+      "clientName": "Priscila Tayane K"
+    },
+    {
+      "entWhatsapp": "44999999999",
+      "clientName": "Duarte Dias De Oliveira ",
+      "deliveryInstructions": "",
+      "orderCode": "25253",
+      "deliveryType": "Berdan",
+      "logistics": "inloco",
+      "cartList": [
+        {
+          "pPrice": 25,
+          "cashback": 0.0456,
+          "cashbackTotal": 0.06,
+          "pid": "xWVy1UepWqGZOcKpOZ0T",
+          "cashbackExtra": 0,
+          "sustainability": 0.003,
+          "pCode": "DYN-12c7al4yy1w1f",
+          "opcionais": [],
+          "smartCashbackValue": 0.28500000000000003,
+          "productPic": "https://firebasestorage.googleapis.com/v0/b/foreverapp-1484f.appspot.com/o/ents%2FyIFfXrFZMeOr1bnAHgXbp5hWpWG3%2Fpublic%2FentLogo%2F1710336163268?alt=media&token=2aaeebd9-1e0c-46b6-a04f-feb40477ff96",
+          "makeTime": 0,
+          "cashbackValue": 1.1400000000000001,
+          "quantity": 1,
+          "sDescription": "almoço ",
+          "pName": "Venda personalizada de Loungefitcascavel",
+          "smartCashback": 0.0114,
+          "adicionais": []
+        }
+      ],
+      "total": 25,
+      "entName": "Loungefitcascavel",
+      "paymentMethod": "pix",
+      "subtotal": 25,
+      "deliveryFullAddress": "Rua Mato Grosso 995 Apartamento 63 85.812-020 Cascavel - PR",
+      "deliveryFee": 0,
+      "discount": 0,
+      "cnpj": "34.424.914/0001-00",
+      "entFullAddress": "Rua Souza Naves 4065 galeria 06 85.810-070 Cascavel - PR",
+      "origin": "Berdan",
+      "clientPhone": "(45) 99993-2804"
+    }
+]

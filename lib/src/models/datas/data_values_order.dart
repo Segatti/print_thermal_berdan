@@ -5,7 +5,7 @@ class DataValuesOrder {
   final num deliveryFee;
   final num discount;
   final num priceTotal;
-  final String paymentForm;
+  final String paymentMethod;
   final bool isPaid;
 
   const DataValuesOrder({
@@ -13,7 +13,7 @@ class DataValuesOrder {
     this.deliveryFee = 0,
     this.discount = 0,
     this.priceTotal = 0,
-    this.paymentForm = "",
+    this.paymentMethod = "",
     this.isPaid = false,
   });
 
@@ -23,7 +23,7 @@ class DataValuesOrder {
       'deliveryFee': deliveryFee,
       'discount': discount,
       'priceTotal': priceTotal,
-      'paymentForm': paymentForm,
+      'paymentMethod': paymentMethod,
       'paid': isPaid,
     };
   }
@@ -34,7 +34,7 @@ class DataValuesOrder {
       deliveryFee: map['deliveryFee'] ?? 0,
       discount: map['discount'] ?? 0,
       priceTotal: map['priceTotal'] ?? 0,
-      paymentForm: map['paymentForm'] ?? "",
+      paymentMethod: map['paymentMethod'] ?? "",
       isPaid: map['paid'] ?? false,
     );
   }

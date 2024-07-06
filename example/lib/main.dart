@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:print_thermal_berdan/print_thermal_berdan.dart';
 
 void main() {
@@ -125,66 +127,83 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // if (printerSelected != null) {
-            var order = const OrderReceipt(
-              company: DataCompany(
-                address: "São Paulo",
-                cnpj: "123456789",
-                name: "Berdan",
-                phone: "999999999",
-              ),
-              customer: DataCustomer(
-                address: "Cuiabá, Mato Grosso",
-                instructions:
-                    "Ao chegar, por favor ligar no interfone o numero X",
-                name: "Vittor",
-                phone: "9999999999",
-              ),
-              itemsOrder: DataItemsOrder(
-                cartList: [
-                  DataItem(
-                    name: "Hamburguer",
-                    price: 30,
-                    quantity: 2,
-                    adicionais: [
-                      DataItemAdicional(
-                        adicional: "Bacon",
-                        price: 5,
-                        quantity: 1,
-                      ),
-                    ],
-                    opcionais: [
-                      DataItemOpcional(
-                        opcional: "Batata Frita",
-                        price: 20,
-                      ),
-                    ],
-                  ),
-                  DataItem(
-                    name: "Coca cola 2L",
-                    price: 15,
-                    quantity: 1,
-                  ),
-                ],
-              ),
-              order: DataOrder(
-                deliveryType: "Berdan",
-                orderCode: "4004",
-                origin: "iFood",
-              ),
-              valuesOrder: DataValuesOrder(
-                deliveryFee: 10,
-                discount: 5,
-                paymentForm: "Cartão Débito",
-                priceTotal: 105,
-                subtotal: 100,
-              ),
-            );
-            await printer.sendToPrinter(order);
-            showMessage("Foi enviado!");
-            // } else {
-            //   showMessage("Escolha uma impressora");
-            // }
+            final String response =
+                await rootBundle.loadString('lib/data.json');
+            final data = await json.decode(response);
+            if (printerSelected != null) {
+              // var order = const OrderReceipt(
+              //   company: DataCompany(
+              //     address: "São Paulo",
+              //     cnpj: "123456789",
+              //     name: "Berdan",
+              //     phone: "999999999",
+              //   ),
+              //   customer: DataCustomer(
+              //     address: "Cuiabá, Mato Grosso",
+              //     instructions:
+              //         "Ao chegar, por favor ligar no interfone o numero X",
+              //     name: "Vittor",
+              //     phone: "9999999999",
+              //   ),
+              //   itemsOrder: DataItemsOrder(
+              //     cartList: [
+              //       DataItem(
+              //         name: "Hamburguer",
+              //         price: 30,
+              //         quantity: 2,
+              //         adicionais: [
+              //           DataItemAdicional(
+              //             adicional: "Bacon",
+              //             price: 5,
+              //             quantity: 2,
+              //           ),
+              //           DataItemAdicional(
+              //             adicional: "Carne",
+              //             price: 10,
+              //             quantity: 1,
+              //           ),
+              //         ],
+              //         opcionais: [
+              //           DataItemOpcional(
+              //             opcional: "Batata Frita",
+              //             price: 20,
+              //           ),
+              //           DataItemOpcional(
+              //             opcional: "Doce",
+              //             price: 15,
+              //           ),
+              //         ],
+              //       ),
+              //       DataItem(
+              //         name: "Coca cola 2L",
+              //         price: 15,
+              //         quantity: 1,
+              //       ),
+              //     ],
+              //   ),
+              //   order: DataOrder(
+              //     deliveryType: "Berdan",
+              //     orderCode: "4004",
+              //     origin: "berdan",
+              //   ),
+              //   valuesOrder: DataValuesOrder(
+              //     deliveryFee: 10,
+              //     discount: 5,
+              //     paymentMethod: "Cartão Débito",
+              //     priceTotal: 105,
+              //     subtotal: 100,
+              //     isPaid: true,
+              //   ),
+              // );
+              var orderJson = OrderReceipt.fromMap(data[0]);
+              await printer.sendToPrinter(
+                orderJson,
+                imageAsset: "assets/logo.webp",
+              );
+              showMessage("Foi enviado!");
+            } else {
+              showMessage("Escolha uma impressora");
+            }
           },
           tooltip: 'Send data',
           child: const Icon(Icons.send),
