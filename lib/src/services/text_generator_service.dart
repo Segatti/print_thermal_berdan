@@ -9,10 +9,12 @@ import 'package:print_thermal_berdan/src/models/extends/ext_string.dart';
 import 'package:print_thermal_berdan/src/models/order_receipt.dart';
 
 class TextGeneratorService implements ITextGeneratorService {
+  PaperSize? paperSize;
   Generator? generator;
 
   @override
   Future<void> init({required PaperSize paperSize}) async {
+    this.paperSize = paperSize;
     final profile = await CapabilityProfile.load();
     generator = Generator(paperSize, profile);
   }
@@ -131,10 +133,12 @@ class TextGeneratorService implements ITextGeneratorService {
         ),
         styles: const PosStyles(),
       );
-      bytes += generator!.text(
-        _createLine("CELULAR", order.customer.phone),
-        styles: const PosStyles(),
-      );
+      if (order.customer.phone.isNotEmpty) {
+        bytes += generator!.text(
+          _createLine("CELULAR", order.customer.phone),
+          styles: const PosStyles(),
+        );
+      }
       bytes += generator!.text(
         _createLine(
           "ENDERECO",
@@ -142,11 +146,11 @@ class TextGeneratorService implements ITextGeneratorService {
         ),
         styles: const PosStyles(),
       );
-      if (order.customer.instructions?.isNotEmpty ?? false) {
+      if (order.customer.instructions.isNotEmpty) {
         bytes += generator!.text(
           _createLine(
             "INSTRUCAO",
-            order.customer.instructions!.removeDiacritics(),
+            order.customer.instructions.removeDiacritics(),
           ),
           styles: const PosStyles(),
         );
@@ -197,7 +201,7 @@ class TextGeneratorService implements ITextGeneratorService {
         PosColumn(
           text: 'TOTAL',
           width: 3,
-          styles: const PosStyles(align: PosAlign.right),
+          styles: const PosStyles(align: PosAlign.left),
         ),
       ]);
       for (var i = 0; i < order.itemsOrder.cartList.length; i++) {
@@ -213,12 +217,12 @@ class TextGeneratorService implements ITextGeneratorService {
           PosColumn(
             text: order.itemsOrder.cartList[i].price.toBRL(),
             width: 3,
-            styles: const PosStyles(align: PosAlign.right),
+            styles: const PosStyles(align: PosAlign.left),
           ),
         ]);
         if (order.itemsOrder.cartList[i].opcionais.isNotEmpty) {
           bytes += generator!.row([
-            PosColumn(width: 1,text: "  "),
+            PosColumn(width: 1, text: "  "),
             PosColumn(
               text: 'Opcionais',
               width: 11,
@@ -227,7 +231,7 @@ class TextGeneratorService implements ITextGeneratorService {
           ]);
           for (var opcional in order.itemsOrder.cartList[i].opcionais) {
             bytes += generator!.row([
-            PosColumn(width: 1,text: "  "),
+              PosColumn(width: 1, text: "  "),
               PosColumn(
                 textEncoded: Uint8List.fromList(
                   generator!.text("- ${opcional.opcional.removeDiacritics()}"),
@@ -237,7 +241,7 @@ class TextGeneratorService implements ITextGeneratorService {
               PosColumn(
                 text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
                 width: 3,
-                styles: const PosStyles(align: PosAlign.right),
+                styles: const PosStyles(align: PosAlign.left),
               ),
             ]);
           }
@@ -245,7 +249,7 @@ class TextGeneratorService implements ITextGeneratorService {
 
         if (order.itemsOrder.cartList[i].adicionais.isNotEmpty) {
           bytes += generator!.row([
-            PosColumn(width: 1,text: "  "),
+            PosColumn(width: 1, text: "  "),
             PosColumn(
               text: 'Adicionais',
               width: 11,
@@ -254,7 +258,7 @@ class TextGeneratorService implements ITextGeneratorService {
           ]);
           for (var adicional in order.itemsOrder.cartList[i].adicionais) {
             bytes += generator!.row([
-            PosColumn(width: 1,text: "  "),
+              PosColumn(width: 1, text: "  "),
               PosColumn(
                 textEncoded: Uint8List.fromList(
                   generator!.text(
@@ -267,7 +271,7 @@ class TextGeneratorService implements ITextGeneratorService {
                 text:
                     (adicional.price != null) ? adicional.price!.toBRL() : "--",
                 width: 3,
-                styles: const PosStyles(align: PosAlign.right),
+                styles: const PosStyles(align: PosAlign.left),
               ),
             ]);
           }
@@ -345,9 +349,11 @@ class TextGeneratorService implements ITextGeneratorService {
         final ByteData data = await rootBundle.load(imageAsset);
         final Uint8List imgBytes = data.buffer.asUint8List();
         final Image? image = decodeImage(imgBytes);
+
         // Using `ESC *`
         if (image != null) {
-          bytes += generator!.image(image);
+          final Image resizedImage = copyResize(image, width: paperSize!.width);
+          bytes += generator!.image(resizedImage);
         }
       }
 

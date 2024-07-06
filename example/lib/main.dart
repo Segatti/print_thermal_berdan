@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //     isPaid: true,
               //   ),
               // );
-              var orderJson = OrderReceipt.fromMap(data[0]);
+              var orderJson = OrderReceipt.fromMap(data[2]);
               await printer.sendToPrinter(
                 orderJson,
                 imageAsset: "assets/logo.webp",

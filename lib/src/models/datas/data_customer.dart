@@ -2,13 +2,13 @@ import 'dart:convert';
 
 class DataCustomer {
   final String name;
-  final String? instructions;
+  final String instructions;
   final String address;
   final String phone;
 
   const DataCustomer({
     this.name = "",
-    this.instructions,
+    this.instructions = "",
     this.address = "",
     this.phone = "",
   });
@@ -25,7 +25,7 @@ class DataCustomer {
   factory DataCustomer.fromMap(Map<String, dynamic> map) {
     return DataCustomer(
       name: map['clientName'] ?? "",
-      instructions: map['deliveryInstructions'],
+      instructions: map['deliveryInstructions'] ?? "",
       address: map['deliveryFullAddress'] ?? "",
       phone: map['clientPhone'] ?? "",
     );
@@ -33,5 +33,6 @@ class DataCustomer {
 
   String toJson() => json.encode(toMap());
 
-  factory DataCustomer.fromJson(String source) => DataCustomer.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DataCustomer.fromJson(String source) =>
+      DataCustomer.fromMap(json.decode(source) as Map<String, dynamic>);
 }
