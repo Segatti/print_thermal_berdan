@@ -218,7 +218,7 @@ class TextGeneratorService implements ITextGeneratorService {
         ]);
         if (order.itemsOrder.cartList[i].opcionais.isNotEmpty) {
           bytes += generator!.row([
-            PosColumn(width: 1),
+            PosColumn(width: 1,text: "  "),
             PosColumn(
               text: 'Opcionais',
               width: 11,
@@ -227,7 +227,7 @@ class TextGeneratorService implements ITextGeneratorService {
           ]);
           for (var opcional in order.itemsOrder.cartList[i].opcionais) {
             bytes += generator!.row([
-              PosColumn(width: 1),
+            PosColumn(width: 1,text: "  "),
               PosColumn(
                 textEncoded: Uint8List.fromList(
                   generator!.text("- ${opcional.opcional.removeDiacritics()}"),
@@ -245,7 +245,7 @@ class TextGeneratorService implements ITextGeneratorService {
 
         if (order.itemsOrder.cartList[i].adicionais.isNotEmpty) {
           bytes += generator!.row([
-            PosColumn(width: 1),
+            PosColumn(width: 1,text: "  "),
             PosColumn(
               text: 'Adicionais',
               width: 11,
@@ -254,7 +254,7 @@ class TextGeneratorService implements ITextGeneratorService {
           ]);
           for (var adicional in order.itemsOrder.cartList[i].adicionais) {
             bytes += generator!.row([
-              PosColumn(width: 1),
+            PosColumn(width: 1,text: "  "),
               PosColumn(
                 textEncoded: Uint8List.fromList(
                   generator!.text(
