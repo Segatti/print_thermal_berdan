@@ -157,23 +157,39 @@ class TextGeneratorService implements ITextGeneratorService {
       }
 
       bytes += generator!.emptyLines(1);
-      bytes += generator!.text(
-        "+----------------ENTREGA----------------+",
-        linesAfter: 1,
-        styles: const PosStyles(align: PosAlign.center),
-      );
+      if (order.order.logistics == "delivery") {
+        bytes += generator!.text(
+          "+----------------ENTREGA----------------+",
+          linesAfter: 1,
+          styles: const PosStyles(align: PosAlign.center),
+        );
+      } else if (order.order.logistics == "inloco") {
+        bytes += generator!.text(
+          "+---------------PRESENCIAL---------------+",
+          linesAfter: 1,
+          styles: const PosStyles(align: PosAlign.center),
+        );
+      } else {
+        bytes += generator!.text(
+          "+----------------RETIRADA----------------+",
+          linesAfter: 1,
+          styles: const PosStyles(align: PosAlign.center),
+        );
+      }
 
       // Order
-      bytes += generator!.text(
-        order.order.deliveryType == 'Berdan'
-            ? 'Entregador: Berdan'
-            : 'Entregador: Entrega Propria',
-        styles: const PosStyles(align: PosAlign.center),
-      );
-
-      if (order.order.orderCode?.isNotEmpty ?? false) {
+      if (order.order.logistics == "delivery") {
         bytes += generator!.text(
-          'Numero do pedido: ${order.order.orderCode!}',
+          order.order.deliveryType == 'Berdan'
+              ? 'Entregador: Berdan'
+              : 'Entregador: Entrega Propria',
+          styles: const PosStyles(align: PosAlign.center),
+        );
+      }
+
+      if (order.order.orderCode.isNotEmpty) {
+        bytes += generator!.text(
+          'Numero do pedido: ${order.order.orderCode}',
           styles: const PosStyles(align: PosAlign.center, reverse: true),
         );
       }
@@ -191,11 +207,12 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.row([
         PosColumn(
           text: 'QTD',
+          width: 2,
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
           text: 'ITEM',
-          width: 6,
+          width: 5,
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
@@ -203,7 +220,7 @@ class TextGeneratorService implements ITextGeneratorService {
         ),
         PosColumn(
           text: 'TOTAL',
-          width: 3,
+          width: 4,
           styles: const PosStyles(align: PosAlign.left),
         ),
       ]);
@@ -212,17 +229,18 @@ class TextGeneratorService implements ITextGeneratorService {
           PosColumn(
             text: "${order.itemsOrder.cartList[i].quantity}x",
             styles: const PosStyles(align: PosAlign.left),
+            width: 2,
           ),
           PosColumn(
             text: order.itemsOrder.cartList[i].name.removeDiacritics(),
-            width: 6,
+            width: 5,
           ),
           PosColumn(
             width: 1,
           ),
           PosColumn(
             text: order.itemsOrder.cartList[i].price.toBRL(),
-            width: 3,
+            width: 4,
             styles: const PosStyles(align: PosAlign.left),
           ),
         ]);
@@ -318,17 +336,20 @@ class TextGeneratorService implements ITextGeneratorService {
           styles: const PosStyles(align: PosAlign.right),
         ),
       ]);
-      bytes += generator!.row([
-        PosColumn(
-          text: "+ ENTREGA:",
-          width: 6,
-        ),
-        PosColumn(
-          text: order.valuesOrder.deliveryFee.toBRL(),
-          width: 6,
-          styles: const PosStyles(align: PosAlign.right),
-        ),
-      ]);
+
+      if (order.order.logistics == "delivery") {
+        bytes += generator!.row([
+          PosColumn(
+            text: "+ ENTREGA:",
+            width: 6,
+          ),
+          PosColumn(
+            text: order.valuesOrder.deliveryFee.toBRL(),
+            width: 6,
+            styles: const PosStyles(align: PosAlign.right),
+          ),
+        ]);
+      }
       bytes += generator!.row([
         PosColumn(
           text: "= TOTAL:",

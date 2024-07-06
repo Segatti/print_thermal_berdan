@@ -3,12 +3,14 @@ import 'dart:convert';
 class DataOrder {
   final String deliveryType;
   final String origin;
-  final String? orderCode;
+  final String orderCode;
+  final String logistics;
 
   const DataOrder({
     this.deliveryType = "",
     this.origin = "",
-    this.orderCode,
+    this.orderCode = "",
+    this.logistics = "",
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class DataOrder {
       'deliveryType': deliveryType,
       'origin': origin,
       'orderCode': orderCode,
+      'logistics': logistics,
     };
   }
 
@@ -24,6 +27,7 @@ class DataOrder {
       deliveryType: map['deliveryType'] ?? "",
       origin: map['origin'] ?? "",
       orderCode: map['orderCode'],
+      logistics: map['logistics'],
     );
   }
 
