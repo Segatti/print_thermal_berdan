@@ -15,19 +15,19 @@ class DataCustomer {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'cName': name,
+      'clientName': name,
       'deliveryInstructions': instructions,
       'deliveryFullAddress': address,
-      'phone': phone,
+      'clientPhone': phone,
     };
   }
 
   factory DataCustomer.fromMap(Map<String, dynamic> map) {
     return DataCustomer(
-      name: map['cName'] ?? "",
+      name: map['clientName'] ?? "",
       instructions: map['deliveryInstructions'],
       address: map['deliveryFullAddress'] ?? "",
-      phone: map['phone'] ?? "",
+      phone: map['clientPhone'] ?? "",
     );
   }
 
