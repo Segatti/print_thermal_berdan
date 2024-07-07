@@ -253,7 +253,7 @@ class TextGeneratorService implements ITextGeneratorService {
                   ? " ${opcional.price!.toBRL().trim()}"
                   : " --",
               width: 3,
-              styles: const PosStyles(align: PosAlign.right),
+              styles: const PosStyles(align: PosAlign.right, bold: true),
             ),
           ]);
         }
@@ -306,11 +306,12 @@ class TextGeneratorService implements ITextGeneratorService {
         PosColumn(
           text: "TOTAL:",
           width: 6,
+          styles: const PosStyles(bold: true),
         ),
         PosColumn(
           text: order.valuesOrder.subtotal.toBRL(),
           width: 6,
-          styles: const PosStyles(align: PosAlign.right),
+          styles: const PosStyles(align: PosAlign.right, bold: true),
         ),
       ]);
       bytes += generator!.row([
