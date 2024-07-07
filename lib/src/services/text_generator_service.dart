@@ -273,7 +273,13 @@ class TextGeneratorService implements ITextGeneratorService {
           ]);
           for (var adicional in order.itemsOrder.cartList[i].adicionais) {
             bytes += generator!.row([
-              PosColumn(width: 3, text: "+${adicional.quantity} "),
+              PosColumn(
+                width: 3,
+                text: "+${adicional.quantity} ",
+                styles: const PosStyles(
+                  align: PosAlign.right,
+                ),
+              ),
               PosColumn(
                 text: adicional.adicional.removeDiacritics().trim(),
                 width: 6,
