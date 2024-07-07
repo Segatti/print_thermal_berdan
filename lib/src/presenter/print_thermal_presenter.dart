@@ -42,7 +42,7 @@ class PrintThermalPresenter {
     OrderReceipt order, {
     String imageAsset = "",
   }) async {
-    await _textService.init(paperSize: PaperSize.mm80);
+    await _textService.init(paperSize: PaperSize.mm72);
     var data = await _textService.generateOrder(
       order: order,
       imageAsset: imageAsset,

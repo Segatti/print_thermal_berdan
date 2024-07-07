@@ -207,100 +207,82 @@ class TextGeneratorService implements ITextGeneratorService {
       bytes += generator!.row([
         PosColumn(
           text: 'QTD',
-          width: 2,
+          width: 1,
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
           text: 'ITEM',
-          width: 5,
+          width: 7,
           styles: const PosStyles(align: PosAlign.left),
         ),
         PosColumn(
-          width: 1,
-        ),
-        PosColumn(
-          text: 'TOTAL',
+          text: ' TOTAL',
           width: 4,
-          styles: const PosStyles(align: PosAlign.left),
+          styles: const PosStyles(align: PosAlign.right),
         ),
       ]);
       for (var i = 0; i < order.itemsOrder.cartList.length; i++) {
         bytes += generator!.row([
           PosColumn(
-            text: "${order.itemsOrder.cartList[i].quantity}x",
-            styles: const PosStyles(align: PosAlign.left),
-            width: 2,
-          ),
-          PosColumn(
-            text: order.itemsOrder.cartList[i].name.removeDiacritics(),
-            width: 5,
-          ),
-          PosColumn(
+            text: order.itemsOrder.cartList[i].quantity.toString().trim(),
             width: 1,
           ),
           PosColumn(
-            text: order.itemsOrder.cartList[i].price.toBRL(),
+            text: order.itemsOrder.cartList[i].name.removeDiacritics().trim(),
+            width: 7,
+          ),
+          PosColumn(
+            text: " ${order.itemsOrder.cartList[i].price.toBRL().trim()}",
             width: 4,
-            styles: const PosStyles(align: PosAlign.left),
+            styles: const PosStyles(align: PosAlign.right),
           ),
         ]);
-        if (order.itemsOrder.cartList[i].opcionais.isNotEmpty) {
+        for (var opcional in order.itemsOrder.cartList[i].opcionais) {
           bytes += generator!.row([
-            PosColumn(width: 1, text: "  "),
             PosColumn(
-              text: 'Opcionais',
-              width: 11,
-              styles: const PosStyles(bold: true),
+              width: 2,
+              text: "- ",
+              styles: const PosStyles(align: PosAlign.right),
+            ),
+            PosColumn(
+              text: opcional.opcional.removeDiacritics().trim(),
+              width: 6,
+            ),
+            PosColumn(
+              text: (opcional.price != null)
+                  ? " ${opcional.price!.toBRL().trim()}"
+                  : " --",
+              width: 4,
+              styles: const PosStyles(align: PosAlign.left),
             ),
           ]);
-          for (var opcional in order.itemsOrder.cartList[i].opcionais) {
-            bytes += generator!.row([
-              PosColumn(width: 1, text: "  "),
-              PosColumn(
-                textEncoded: Uint8List.fromList(
-                  generator!.text("- ${opcional.opcional.removeDiacritics()}"),
-                ),
-                width: 7,
-              ),
-              PosColumn(
-                width: 1,
-              ),
-              PosColumn(
-                text: (opcional.price != null) ? opcional.price!.toBRL() : "--",
-                width: 3,
-                styles: const PosStyles(align: PosAlign.left),
-              ),
-            ]);
-          }
         }
 
         if (order.itemsOrder.cartList[i].adicionais.isNotEmpty) {
           bytes += generator!.row([
-            PosColumn(width: 1, text: "  "),
+            PosColumn(
+              width: 2,
+              text: "** ",
+              styles: const PosStyles(align: PosAlign.right),
+            ),
             PosColumn(
               text: 'Adicionais',
-              width: 11,
+              width: 10,
               styles: const PosStyles(bold: true),
             ),
           ]);
           for (var adicional in order.itemsOrder.cartList[i].adicionais) {
             bytes += generator!.row([
-              PosColumn(width: 1, text: "  "),
+              PosColumn(width: 2, text: "+${adicional.quantity} "),
               PosColumn(
-                textEncoded: Uint8List.fromList(
-                  generator!.text(
-                    "+${adicional.quantity}x ${adicional.adicional.removeDiacritics()}",
-                  ),
-                ),
-                width: 7,
+                text: adicional.adicional.removeDiacritics().trim(),
+                width: 6,
               ),
               PosColumn(
-                width: 1,
-              ),
-              PosColumn(
-                text:
-                    (adicional.price != null) ? adicional.price!.toBRL() : "--",
-                width: 3,
+                text: (adicional.price != null)
+                    ? " ${adicional.price!.toBRL().trim()}"
+                    : "--",
+                width: 4,
                 styles: const PosStyles(align: PosAlign.left),
               ),
             ]);
@@ -308,11 +290,11 @@ class TextGeneratorService implements ITextGeneratorService {
         }
 
         if ((i + 1) < order.itemsOrder.cartList.length) {
-          bytes += generator!.hr(len: 42);
+          bytes += generator!.hr();
         }
       }
 
-      bytes += generator!.hr(ch: "=", len: 42);
+      bytes += generator!.hr(ch: "=");
       // Total
       bytes += generator!.row([
         PosColumn(
