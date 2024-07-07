@@ -234,7 +234,7 @@ class TextGeneratorService implements ITextGeneratorService {
           PosColumn(
             text: " ${order.itemsOrder.cartList[i].price.toBRL().trim()}",
             width: 3,
-            styles: const PosStyles(align: PosAlign.right),
+            styles: const PosStyles(align: PosAlign.right, bold: true),
           ),
         ]);
         for (var opcional in order.itemsOrder.cartList[i].opcionais) {
@@ -253,7 +253,7 @@ class TextGeneratorService implements ITextGeneratorService {
                   ? " ${opcional.price!.toBRL().trim()}"
                   : " --",
               width: 3,
-              styles: const PosStyles(align: PosAlign.right, bold: true),
+              styles: const PosStyles(align: PosAlign.right),
             ),
           ]);
         }
