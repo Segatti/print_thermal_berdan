@@ -61,7 +61,7 @@ class TextGeneratorService implements ITextGeneratorService {
       {required OrderReceipt order, String imageAsset = ""}) async {
     if (generator != null) {
       List<int> bytes = [];
-      var dateFormat = DateFormat("dd/MM/yyyy hh:mm");
+      var dateFormat = DateFormat("dd/MM/yyyy HH:mm");
       bytes += generator!.setStyles(
         const PosStyles(
           bold: false,
@@ -268,7 +268,6 @@ class TextGeneratorService implements ITextGeneratorService {
             PosColumn(
               text: 'Adicionais',
               width: 9,
-              styles: const PosStyles(bold: true),
             ),
           ]);
           for (var adicional in order.itemsOrder.cartList[i].adicionais) {
