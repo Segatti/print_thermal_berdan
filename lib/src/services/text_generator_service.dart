@@ -38,27 +38,11 @@ class TextGeneratorService implements ITextGeneratorService {
     }
   }
 
-  List<int> createTitle(String title) {
-    var bytes = <int>[];
-    bytes += generator!.text(
-      "+----------------------------------------+",
-    );
-    bytes += generator!.text(
-      title,
-      styles: const PosStyles(
-        align: PosAlign.center,
-        bold: true,
-      ),
-    );
-    bytes += generator!.text(
-      "+----------------------------------------+",
-    );
-    return bytes;
-  }
-
   @override
-  Future<List<int>> generateOrder(
-      {required OrderReceipt order, String imageAsset = ""}) async {
+  Future<List<int>> generateOrder({
+    required OrderReceipt order,
+    String imageAsset = "",
+  }) async {
     if (generator != null) {
       List<int> bytes = [];
       var dateFormat = DateFormat("dd/MM/yyyy HH:mm");

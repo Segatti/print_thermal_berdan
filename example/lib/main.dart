@@ -127,6 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
+            // Dados sendo carregados do arquivo json
             final String response =
                 await rootBundle.loadString('lib/data.json');
             final data = await json.decode(response);

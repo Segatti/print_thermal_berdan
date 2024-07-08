@@ -11,11 +11,17 @@ class PrintThermalPresenter {
   late ITextGeneratorService _textService;
   late PrinterType typeConnection;
 
-  PrintThermalPresenter(this.typeConnection) {
+  PrintThermalPresenter(
+    /// Tipo de Conexão (USB, Network, Bluetooth)
+    this.typeConnection,
+  ) {
     _printerService = PrintThermalService();
     _textService = TextGeneratorService();
   }
 
+  /// Scaneia as impressoras
+  /// 
+  /// Retorno: Stream<PrinterDevice>
   Stream<PrinterDevice> getDevices() {
     typeConnection = typeConnection;
     return _printerService.scanPrinters(
@@ -24,6 +30,11 @@ class PrintThermalPresenter {
     );
   }
 
+  /// Conecta a uma impressora
+  /// 
+  /// Retorno: true == sucesso | false == falha
+  /// 
+  /// Exception: ExceptionPrintThermalBerdan(message)
   Future<bool> connectDevice(PrinterDevice device) async {
     return await _printerService.connectPrinter(
       selectedPrinter: device,
@@ -34,15 +45,27 @@ class PrintThermalPresenter {
     );
   }
 
+  /// Disconecta a impresora atual
+  /// 
+  /// Retorno: true == sucesso | false == falha
   Future<bool> disconnectDevice() async {
     return await _printerService.disconnectPrinter(type: typeConnection);
   }
 
+  /// Enviar uma ordem para impressão
+  /// 
+  /// Retorno: true == sucesso | false == falha
   Future<bool> sendToPrinter(
+    /// Dados para impressão
     OrderReceipt order, {
+    /// Logo armazenada dentro do projeto
     String imageAsset = "",
+    /// Tamanho do papel da maquina. 
+    /// 
+    /// CUIDADO: Caso configurado errado irá imprimir errado!
+    PaperSize paperSize = PaperSize.mm72,
   }) async {
-    await _textService.init(paperSize: PaperSize.mm72);
+    await _textService.init(paperSize: paperSize);
     var data = await _textService.generateOrder(
       order: order,
       imageAsset: imageAsset,
