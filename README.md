@@ -18,14 +18,15 @@ Esse lib foi criada para dar suporte a impressão de cupom fiscal no ecosistema 
 
 ## ATENÇÃO
 
-1 ) Para a impressão ser efetuada corretamente é preciso configurar corretamente a impressora para ter suporte ao padrão de dados **ESC/POS**.
+> [!IMPORTANT]
+> Para a impressão ser efetuada corretamente é preciso configurar corretamente a impressora para ter suporte ao padrão de dados **ESC/POS**.
 
-2 ) Se a **impressão estever mal formatada**, tente mudar o tamanho do paper na função sendToPrinter, no parâmetro *"paperSize"* para o tamanho que melhor se adaptar a sua maquina.
+> [!TIP]
+> Se a **impressão estever mal formatada**, tente mudar o tamanho do paper na função sendToPrinter, no parâmetro *"paperSize"* para o tamanho que melhor se adaptar a sua maquina.
 
 > [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
+> Durante os testes com dispositivos reais, o padrão ESC/POS no aparelho Bematech MP 4200 Th 80mm só imprimiu corretamente com o tamanho 72mm.
 
-3 ) **Durante os testes com dispositivos reais, o padrão ESC/POS no aparelho Bematech MP 4200 Th 80mm só imprimiu corretamente com o tamanho 72mm.**
 ## Uso/Exemplos
 
 #### Listando impressoras
