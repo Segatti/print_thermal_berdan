@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<PrinterDevice> devices = [];
   late StreamSubscription<PrinterDevice> streamDevices;
   PrinterDevice? printerSelected;
-  final ipPrinter = TextEditingController();
 
   void showMessage(String text) {
     var snack = SnackBar(
