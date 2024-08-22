@@ -26,8 +26,8 @@ class DataOrder {
     return DataOrder(
       deliveryType: map['deliveryType'] ?? "",
       origin: map['origin'] ?? "",
-      orderCode: map['orderCode'],
-      logistics: map['logistics'],
+      orderCode: map['orderCode'] ?? "",
+      logistics: map['logistics'] ?? "",
     );
   }
 
