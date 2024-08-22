@@ -1,6 +1,6 @@
 name: print_thermal_berdan
 description: "Lib para imprimir notas de pedidos da Berdan"
-version: 0.0.1
+version: 0.0.2
 homepage: https://dart.dev/tools/pub/pubspec
 
 environment:
