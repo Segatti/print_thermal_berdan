@@ -81,7 +81,7 @@ class PrintThermalService implements IPrintThermalService {
   Future<bool> sendToPrint({
     required List<int> bytes,
     required PrinterType type,
-  }) {
-    return _printer.send(type: type, bytes: bytes);
+  }) async {
+    return await _printer.send(type: type, bytes: bytes);
   }
 }
