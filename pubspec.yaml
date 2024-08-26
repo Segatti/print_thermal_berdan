@@ -1,6 +1,6 @@
 name: print_thermal_berdan
 description: "Lib para imprimir notas de pedidos da Berdan"
-version: 0.0.2
+version: 0.0.3
 homepage: https://dart.dev/tools/pub/pubspec
 
 environment:
@@ -29,7 +29,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-flutter:
+# flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:

@@ -7,13 +7,15 @@ import 'package:print_thermal_berdan/src/models/datas/data_order.dart';
 import 'package:print_thermal_berdan/src/models/datas/data_values_order.dart';
 
 class OrderReceipt {
+  final String id;
   final DataCompany company;
   final DataCustomer customer;
   final DataOrder order;
   final DataItemsOrder itemsOrder;
   final DataValuesOrder valuesOrder;
-  
+
   const OrderReceipt({
+    this.id = "",
     this.company = const DataCompany(),
     this.customer = const DataCustomer(),
     this.order = const DataOrder(),
@@ -23,6 +25,7 @@ class OrderReceipt {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'uid': id,
       ...company.toMap(),
       ...customer.toMap(),
       ...order.toMap(),
@@ -33,6 +36,7 @@ class OrderReceipt {
 
   factory OrderReceipt.fromMap(Map<String, dynamic> map) {
     return OrderReceipt(
+      id: map['uid'] ?? '',
       company: DataCompany.fromMap(map),
       customer: DataCustomer.fromMap(map),
       order: DataOrder.fromMap(map),
