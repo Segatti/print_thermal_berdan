@@ -1,17 +1,20 @@
 name: print_thermal_berdan
 description: "Lib para imprimir notas de pedidos da Berdan"
-version: 0.0.3
+version: 0.0.4
 homepage: https://dart.dev/tools/pub/pubspec
+publish_to: none
 
 environment:
-  sdk: ">=3.4.1 <4.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  thermal_printer: ^1.0.5
+  thermal_printer:
+    git:
+      url: https://github.com/Segatti/thermal_printer.git
   flutter_esc_pos_utils: ^1.0.1
   intl: ^0.19.0
   image: ^4.2.0

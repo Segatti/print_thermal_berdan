@@ -65,10 +65,6 @@ class PrintThermalService implements IPrintThermalService {
             ipAddress: ipAddress ?? selectedPrinter.address!,
           ),
         );
-      default:
-        throw ExceptionPrintThermalBerdan(
-          "PrinterType Inválido",
-        );
     }
   }
 
